@@ -756,7 +756,13 @@ function RoomModal({ handleClose, type, data }) {
         validationSchema={room_schema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setTimeout(() => {
-            if (type === "add") dispatch(addRoom(selectedHome, values));
+            if (type === "add"){
+              dispatch(addRoom(selectedHome, values)).then((res) => {
+                console.log("[res]", res);
+              }).catch((err) => {
+                console.log("[err]", err);
+              })
+            }
             else dispatch(editRoom(values));
             setSubmitting(false);
             handleClose();
