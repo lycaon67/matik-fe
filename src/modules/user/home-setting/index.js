@@ -848,7 +848,13 @@ function RoomModalDelete({ handleClose, data }) {
   const selectedHome = useSelector((state) => state.homeData.selectedHome);
 
   const handleRemove = () => {
-    dispatch(deleteRoom(data?.id));
+    dispatch(deleteRoom(data?.id))
+      .then((res) => {
+        console.log("[Room] Delete Success");
+      })
+      .catch((err) => {
+        console.log("[Room] Delete Failed", err);
+      })
     handleClose();
   };
 

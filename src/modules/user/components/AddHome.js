@@ -55,7 +55,7 @@ export default function Addhome({ open, handleClose }) {
 	const [initVal, setInitVal] = React.useState({
 		name: null,
 		address: null,
-		rooms: [{type: 0, name: null}]
+		rooms: []
 	})
 
     const roomIcons = [
@@ -68,6 +68,12 @@ export default function Addhome({ open, handleClose }) {
 
 	function handleSave(data) {
 		dispatch(addHome(data))
+			.then((res) => {
+				console.log("[home] add success");
+			})
+			.catch((err) => {
+				console.log("[home] add failed", err);
+			})
 	}
 
 	return (
@@ -181,185 +187,6 @@ export default function Addhome({ open, handleClose }) {
 										<FormHelperText error={errors?.address}>
 											{touched.address && errors?.address}
 										</FormHelperText>
-									</FormControl>
-									<FormControl fullWidth>
-										<FieldArray
-											id={"rooms"}
-											name={"rooms"}
-											render={({
-												insert,
-												remove,
-												push,
-											}) => {
-												console.log("[values]", values);
-												return (
-													<Box
-														component={"div"}
-														sx={{
-															display: "flex",
-															flexDirection:
-																"column",
-															gap: 1,
-															mt: 1,
-															width: "100%",
-														}}
-													>
-														<Box
-															sx={{
-																display: "flex",
-																justifyContent:
-																	"space-between",
-															}}
-														>
-															<Typography
-																gutterBottom
-																sx={{
-																	fontFamily:
-																		"inherit",
-																	fontSize:
-																		"14px",
-																	color: "#101840",
-																	textAlign:
-																		"left",
-																	fontWeight: 500,
-																	marginTop: 2,
-																}}
-															>
-																{"Rooms"}
-															</Typography>
-
-															<IconButton
-																onClick={() => {
-																	push({
-																		type: 0,
-																		name: "",
-																	});
-																}}
-															>
-																<AddCircleOutlineOutlinedIcon />
-															</IconButton>
-														</Box>
-
-														<Stack
-															component={"Stack"}
-															direction="column"
-															spacing={1}
-															sx={{
-																maxHeight:
-																	"180px",
-																overflowX:
-																	"auto",
-																// scrollPaddingTop: 2
-															}}
-														>
-															{/* <IconButton  onClick={() => remove(idx)}>
-																<DeleteForeverRoundedIcon/>
-															</IconButton> */}
-															{values?.rooms?.map(
-																(
-																	field,
-																	idx,
-																) => {
-																	return (
-																		<div>
-																			<Field
-																				name={`rooms.${idx}.type`}
-																				render={({
-																					field /* { name, value, onChange, onBlur } */,
-																				}) => (
-																					<TextField
-																						{...field}
-																						select
-																						type="text"
-																						label="Type"
-																						variant="standard"
-																						sx={{
-																							".MuiSelect-outlined":
-																								{
-																									padding:
-																										"13px",
-																								},
-																							".MuiSelect-select":
-																								{
-																									height: "0px!important",
-																								},
-																						}}
-																						error={
-																							touched[
-																								field
-																									.value
-																							] &&
-																							errors[
-																								field
-																									.value
-																							]
-																						}
-																					>
-																						{roomIcons.map(
-																							(
-																								option,
-																							) => (
-																								<MenuItem
-																									key={
-																										option.value
-																									}
-																									value={
-																										option.value
-																									}
-																								>
-																									{
-																										option.label
-																									}
-																								</MenuItem>
-																							),
-																						)}
-																					</TextField>
-																				)}
-																			/>
-																			<Field
-																				name={`rooms.${idx}.name`}
-																				render={({
-																					field /* { name, value, onChange, onBlur } */,
-																				}) => (
-																					<TextField
-																						{...field}
-																						type="text"
-																						label="Rooms"
-																						variant="standard"
-																						error={
-																							touched
-																								?.rooms
-																								?.idx
-																								?.name ??
-																							errors
-																								?.rooms
-																								?.idx
-																								?.name
-																						}
-																						sx={{
-																							width: "calc(100% - 110px)",
-																						}}
-																					/>
-																				)}
-																			/>
-																			<IconButton
-																				onClick={() =>
-																					remove(
-																						idx,
-																					)
-																				}
-																			>
-																				<DeleteForeverRoundedIcon />
-																			</IconButton>
-																		</div>
-																	);
-																},
-															)}
-														</Stack>
-													</Box>
-												);
-											}}
-										/>
 									</FormControl>
 								</>
 							</Box>
