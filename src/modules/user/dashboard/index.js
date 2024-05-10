@@ -9,6 +9,7 @@ import {
 } from "@mui/material"
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
+import jwt_decode from "jwt-decode"
 import { isJsonString } from "../../../shared/util/common"
 import {HomeModalDelete} from "../home-setting/index"
 // import Grid from '@mui/material/Unstable_Grid2';
@@ -28,6 +29,7 @@ function UserDashboard() {
 	const [homeModal, setHomeModal] = React.useState();
     const [client, setClient] = React.useState()
     const homeData = useSelector(state => state.homeData.data)
+    const userData = useSelector(state => state.UserData.data)
     const selectedHome = useSelector(state => state.homeData.selectedHome)
     const selectedRoom = useSelector(state => state.homeData.selectedRoom)
 
@@ -92,11 +94,15 @@ function UserDashboard() {
 
 
     const handleClickChannel = (id, status) => {
-        client.emit("channel", selectedHome?.id.replaceAll("-", ""), JSON.stringify({
-            'type': "deviceInfo",
-            "channelId": id,
-            "status": status
-        }))
+        client.emit("channel", 
+			selectedHome?.id.replaceAll("-", ""), 
+			JSON.stringify({
+				'type': "deviceInfo",
+				"channelId": id,
+				"status": status
+			}),
+			jwt_decode(userData?.token)
+		)
     }
 
 	const roomName = (id) => {
@@ -130,6 +136,7 @@ function UserDashboard() {
 		setHomeModal(false)
 	}
 
+	console.log("[test]", [RoomChannel[1]])
 	return (
 		<>
 			<Container maxWidth={false} sx={{ paddingY: 1.5, margin: 0 }}>
