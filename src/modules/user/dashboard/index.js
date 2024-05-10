@@ -136,7 +136,6 @@ function UserDashboard() {
 		setHomeModal(false)
 	}
 
-	console.log("[test]", [RoomChannel[1]])
 	return (
 		<>
 			<Container maxWidth={false} sx={{ paddingY: 1.5, margin: 0 }}>
